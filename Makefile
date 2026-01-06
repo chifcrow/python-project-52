@@ -1,7 +1,9 @@
 .PHONY: install start migrate collectstatic build render-start check
 
+UV_PYTHON ?= python3.10
+
 install:
-	uv sync
+	uv sync --python $(UV_PYTHON)
 
 start:
 	uv run python manage.py runserver 0.0.0.0:8000

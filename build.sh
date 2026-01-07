@@ -12,7 +12,6 @@ source "$HOME/.local/bin/env"
 echo "==> build.sh: uv location: $(command -v uv || true)"
 echo "==> build.sh: python3 location before fix: $(command -v python3 || true)"
 
-# Prefer Render-installed CPython over wrapper scripts.
 PY_CANDIDATE="$(ls -1 /opt/render/project/python/Python-*/bin/python3 2>/dev/null \
   | head -n 1 || true)"
 

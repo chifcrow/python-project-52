@@ -4,9 +4,9 @@ set -euo pipefail
 echo "==> build.sh: starting"
 echo "==> build.sh: initial PATH=${PATH}"
 
-# Install uv (Render build environment)
+
 curl -LsSf https://astral.sh/uv/install.sh | sh
-# shellcheck disable=SC1091
+
 source "$HOME/.local/bin/env"
 
 echo "==> build.sh: uv location: $(command -v uv || true)"

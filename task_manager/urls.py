@@ -3,10 +3,10 @@
 from django.contrib import admin
 from django.urls import path
 
-from core.views import healthz, home
+from core.views import HomeView, healthz
 
 urlpatterns = [
-    path("", home, name="home"),
+    path("", HomeView.as_view(), name="home"),
     path("healthz", healthz, name="healthz"),
     path("admin/", admin.site.urls),
 ]

@@ -23,7 +23,6 @@ SECRET_KEY = os.getenv(
     "django-insecure-hipet+stv-ykw6-^l6)l0(*z)-0*gjpxie#z10afx=&b-ig(76",
 )
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "true").lower() in {"1", "true", "yes", "on"}
 
 ALLOWED_HOSTS = [
@@ -34,9 +33,9 @@ ALLOWED_HOSTS = [
 extra_hosts = os.getenv("ALLOWED_HOSTS", "")
 if extra_hosts:
     ALLOWED_HOSTS.extend(
-        [h.strip() for h in extra_hosts.split(",") if h.strip()])
+        [h.strip() for h in extra_hosts.split(",") if h.strip()]
+    )
 
-# Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -44,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_bootstrap5",
     "core",
 ]
 
@@ -77,7 +77,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "task_manager.wsgi.application"
 
-# Database
 DATABASES = {
     "default": dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
@@ -87,7 +86,6 @@ DATABASES = {
     )
 }
 
-# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": (
@@ -115,13 +113,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
 LANGUAGE_CODE = os.getenv("LANGUAGE_CODE", "en-us")
 TIME_ZONE = os.getenv("TIME_ZONE", "UTC")
 USE_I18N = True
 USE_TZ = True
 
-# Static files
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 

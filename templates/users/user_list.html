@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Users" %}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">{% trans "Users" %}</h1>
+    <a class="btn btn-primary" href="{% url 'users:create' %}">
+        {% trans "Create user" %}
+    </a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead>
+        <tr>
+            <th scope="col">{% trans "Username" %}</th>
+            <th scope="col">{% trans "Full name" %}</th>
+            <th scope="col" class="text-end">{% trans "Actions" %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.get_full_name|default:"-" }}</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-secondary"
+                       href="{% url 'users:update' user.pk %}">
+                        {% trans "Edit" %}
+                    </a>
+                    <a class="btn btn-sm btn-outline-danger"
+                       href="{% url 'users:delete' user.pk %}">
+                        {% trans "Delete" %}
+                    </a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="3" class="text-muted">
+                    {% trans "No users found." %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

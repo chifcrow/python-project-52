@@ -1,3 +1,5 @@
+# task_manager/settings.py
+
 """
 Django settings for task_manager project.
 """
@@ -23,6 +25,7 @@ SECRET_KEY = os.getenv(
     "django-insecure-hipet+stv-ykw6-^l6)l0(*z)-0*gjpxie#z10afx=&b-ig(76",
 )
 
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "true").lower() in {"1", "true", "yes", "on"}
 
 ALLOWED_HOSTS = [
@@ -45,6 +48,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_bootstrap5",
     "core",
+    "users",
 ]
 
 MIDDLEWARE = [
@@ -128,3 +132,6 @@ STORAGES = {
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"

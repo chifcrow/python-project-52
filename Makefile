@@ -1,6 +1,7 @@
 .PHONY: install start migrate collectstatic build render-start check
 
-UV_PYTHON ?= python3.10
+# May be overridden in CI/Render (e.g., UV_PYTHON=/full/path/to/python)
+UV_PYTHON ?= python3
 
 install:
 	uv sync --python $(UV_PYTHON)

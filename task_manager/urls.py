@@ -11,6 +11,7 @@ urlpatterns = [
     path("healthz", healthz, name="healthz"),
     path("users/", include("users.urls", namespace="users")),
     path("statuses/", include("statuses.urls", namespace="statuses")),
+    path("tasks/", include("tasks.urls", namespace="tasks")),
     path("login/", auth_views.LoginView.as_view(), name="login"),
     path(
         "logout/",

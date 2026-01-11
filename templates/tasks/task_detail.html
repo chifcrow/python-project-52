@@ -35,6 +35,15 @@
             <dt class="col-sm-3">{% trans "Author" %}</dt>
             <dd class="col-sm-9">{{ task.author.username }}</dd>
 
+            <dt class="col-sm-3">{% trans "Labels" %}</dt>
+            <dd class="col-sm-9">
+                {% for label in task.labels.all %}
+                    <span class="badge bg-secondary me-1">{{ label.name }}</span>
+                {% empty %}
+                    <span class="text-muted">-</span>
+                {% endfor %}
+            </dd>
+
             <dt class="col-sm-3">{% trans "Description" %}</dt>
             <dd class="col-sm-9">
                 {% if task.description %}

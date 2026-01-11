@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Labels" %}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">{% trans "Labels" %}</h1>
+    <a class="btn btn-primary" href="{% url 'labels:create' %}">
+        {% trans "Create label" %}
+    </a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead>
+        <tr>
+            <th scope="col">{% trans "Name" %}</th>
+            <th scope="col" class="text-end">{% trans "Actions" %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for label in labels %}
+            <tr>
+                <td>{{ label.name }}</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-secondary"
+                       href="{% url 'labels:update' label.pk %}">
+                        {% trans "Edit" %}
+                    </a>
+                    <a class="btn btn-sm btn-outline-danger"
+                       href="{% url 'labels:delete' label.pk %}">
+                        {% trans "Delete" %}
+                    </a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="2" class="text-muted">
+                    {% trans "No labels found." %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

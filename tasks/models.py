@@ -3,6 +3,7 @@
 from django.conf import settings
 from django.db import models
 
+from labels.models import Label
 from statuses.models import Status
 
 
@@ -22,6 +23,7 @@ class Task(models.Model):
         blank=True,
         related_name="executed_tasks",
     )
+    labels = models.ManyToManyField(Label, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

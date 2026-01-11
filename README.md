@@ -2,8 +2,6 @@
 
 [![Actions Status](https://github.com/chifcrow/python-project-52/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/chifcrow/python-project-52/actions)
 
-[![Actions Status](https://github.com/chifcrow/python-project-52/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/chifcrow/python-project-52/actions)
-
 # Task Manager
 
 Django-based web application deployed on Render (PaaS).

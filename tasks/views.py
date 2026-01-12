@@ -4,21 +4,24 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import (CreateView,
-                                  DeleteView,
-                                  DetailView,
-                                  ListView,
-                                  UpdateView
-                                  )
+from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
+from django_filters.views import FilterView
 
+from tasks.filters import TaskFilter
 from tasks.forms import TaskForm
 from tasks.models import Task
 
 
-class TaskListView(LoginRequiredMixin, ListView):
+class TaskListView(LoginRequiredMixin, FilterView):
     model = Task
     template_name = "tasks/task_list.html"
     context_object_name = "tasks"
+    filterset_class = TaskFilter
+
+    def get_filterset(self, filterset_class):
+        filterset = super().get_filterset(filterset_class)
+        filterset.request = self.request
+        return filterset
 
 
 class TaskDetailView(LoginRequiredMixin, DetailView):

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n %}
+{% load i18n django_bootstrap5 %}
 
 {% block title %}{% trans "Tasks" %}{% endblock %}
 
@@ -9,6 +9,36 @@
     <a class="btn btn-primary" href="{% url 'tasks:create' %}">
         {% trans "Create task" %}
     </a>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-3">
+                {% bootstrap_field filter.form.status show_label=True %}
+            </div>
+            <div class="col-md-3">
+                {% bootstrap_field filter.form.executor show_label=True %}
+            </div>
+            <div class="col-md-3">
+                {% bootstrap_field filter.form.labels show_label=True %}
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <div class="w-100">
+                    {% bootstrap_field filter.form.self_tasks show_label=True %}
+                </div>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">
+                    {% trans "Show" %}
+                </button>
+                <a class="btn btn-outline-secondary" href="{% url 'tasks:list' %}">
+                    {% trans "Reset" %}
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
 
 <div class="table-responsive">

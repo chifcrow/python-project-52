@@ -2,9 +2,14 @@
 
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.http import HttpRequest, HttpResponse
 from django.urls import include, path
-
 from core.views import HomeView, healthz
+
+
+def rollbar_error(request: HttpRequest) -> HttpResponse:
+    raise RuntimeError("Rollbar test error")
+
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
@@ -19,5 +24,6 @@ urlpatterns = [
         auth_views.LogoutView.as_view(next_page="home"),
         name="logout",
     ),
+    path("debug/rollbar-error/", rollbar_error, name="rollbar_error"),
     path("admin/", admin.site.urls),
 ]

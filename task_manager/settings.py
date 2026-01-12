@@ -16,14 +16,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # On Render, environment variables are provided by the platform.
 load_dotenv(BASE_DIR / ".env")
 
-# SECURITY WARNING: keep the secret key used in production secret!
-# Fallback is kept for local quick start only.
 SECRET_KEY = os.getenv(
     "SECRET_KEY",
     "django-insecure-hipet+stv-ykw6-^l6)l0(*z)-0*gjpxie#z10afx=&b-ig(76",
 )
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "true").lower() in {"1", "true", "yes", "on"}
 
 ALLOWED_HOSTS = [
@@ -138,3 +135,28 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+
+# Rollbar integration (enabled in production only)
+ROLLBAR_ACCESS_TOKEN = os.getenv("ROLLBAR_ACCESS_TOKEN", "").strip()
+ROLLBAR_ENV = os.getenv("ROLLBAR_ENV", "development").strip()
+
+ROLLBAR_ENABLED = (
+    not DEBUG
+    and bool(ROLLBAR_ACCESS_TOKEN)
+    and os.getenv(
+        "ROLLBAR_ENABLED", "true").lower() in {"1", "true", "yes", "on"}
+)
+
+if ROLLBAR_ENABLED:
+    import rollbar
+
+    rollbar.init(
+        access_token=ROLLBAR_ACCESS_TOKEN,
+        environment=ROLLBAR_ENV,
+        root=str(BASE_DIR),
+        allow_logging_basic_config=False,
+    )
+
+    MIDDLEWARE.append(
+        "rollbar.contrib.django.middleware.RollbarNotifierMiddleware"
+    )

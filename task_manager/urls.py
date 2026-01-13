@@ -4,11 +4,22 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.http import HttpRequest, HttpResponse
 from django.urls import include, path
+
 from core.views import HomeView, healthz
 
 
 def rollbar_error(request: HttpRequest) -> HttpResponse:
-    raise RuntimeError("Rollbar test error")
+    try:
+        raise RuntimeError("Rollbar test error")
+    except RuntimeError:
+        # Force-send error to Rollbar to validate integration.
+        try:
+            import rollbar
+
+            rollbar.report_exc_info()
+        except Exception:
+            pass
+        raise
 
 
 urlpatterns = [

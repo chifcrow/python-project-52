@@ -5,8 +5,10 @@ Django settings for task_manager project.
 """
 
 from __future__ import annotations
+
 import os
 from pathlib import Path
+
 import dj_database_url
 from dotenv import load_dotenv
 
@@ -136,27 +138,14 @@ LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
-# Rollbar integration (enabled in production only)
+# Rollbar configuration is read from environment variables.
+# Initialization is performed in WSGI to ensure it runs in production.
 ROLLBAR_ACCESS_TOKEN = os.getenv("ROLLBAR_ACCESS_TOKEN", "").strip()
 ROLLBAR_ENV = os.getenv("ROLLBAR_ENV", "development").strip()
+ROLLBAR_ENABLED = os.getenv("ROLLBAR_ENABLED", "true").lower() in {
+    "1",
+    "true",
+    "yes",
+    "on",
+}
 
-ROLLBAR_ENABLED = (
-    not DEBUG
-    and bool(ROLLBAR_ACCESS_TOKEN)
-    and os.getenv(
-        "ROLLBAR_ENABLED", "true").lower() in {"1", "true", "yes", "on"}
-)
-
-if ROLLBAR_ENABLED:
-    import rollbar
-
-    rollbar.init(
-        access_token=ROLLBAR_ACCESS_TOKEN,
-        environment=ROLLBAR_ENV,
-        root=str(BASE_DIR),
-        allow_logging_basic_config=False,
-    )
-
-    MIDDLEWARE.append(
-        "rollbar.contrib.django.middleware.RollbarNotifierMiddleware"
-    )

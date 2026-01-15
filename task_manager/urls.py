@@ -10,9 +10,11 @@ from core.views import HomeView, healthz
 
 def rollbar_error(request: HttpRequest) -> HttpResponse:
     try:
+        import rollbar
+
+        rollbar.report_message("Rollbar test message from Django", level="error")
         raise RuntimeError("Rollbar test error")
     except RuntimeError:
-        # Force-send error to Rollbar to validate integration.
         try:
             import rollbar
 

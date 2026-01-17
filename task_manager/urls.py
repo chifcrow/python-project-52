@@ -9,20 +9,17 @@ from core.views import HomeView, healthz
 
 
 def rollbar_error(request: HttpRequest) -> HttpResponse:
-    try:
-        import rollbar
+    raise RuntimeError("Rollbar test error")
 
-        rollbar.report_message("Rollbar test message from Django", level="error")
-        raise RuntimeError("Rollbar test error")
-    except RuntimeError:
-        try:
-            import rollbar
 
-            rollbar.report_exc_info()
-        except Exception:
-            pass
-        raise
+def rollbar_ping(request: HttpRequest) -> HttpResponse:
+    # Explicit send to Rollbar + flush, returns 200 if call executed.
+    import rollbar
 
+    rollbar.report_message("Rollbar ping from Django", level="error")
+    rollbar.flush()
+    return HttpResponse("ok")
+    
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
@@ -38,5 +35,6 @@ urlpatterns = [
         name="logout",
     ),
     path("debug/rollbar-error/", rollbar_error, name="rollbar_error"),
+    path("debug/rollbar-ping/", rollbar_ping, name="rollbar_ping"),
     path("admin/", admin.site.urls),
 ]

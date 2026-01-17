@@ -136,6 +136,7 @@ LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
+# Rollbar (Django middleware integration)
 ROLLBAR_ACCESS_TOKEN = os.getenv("ROLLBAR_ACCESS_TOKEN", "").strip()
 ROLLBAR_ENV = os.getenv("ROLLBAR_ENV", "development").strip()
 ROLLBAR_ENABLED = os.getenv("ROLLBAR_ENABLED", "true").lower() in {
@@ -145,11 +146,12 @@ ROLLBAR_ENABLED = os.getenv("ROLLBAR_ENABLED", "true").lower() in {
     "on",
 }
 
-# Enable Rollbar middleware only in production with token
 if not DEBUG and ROLLBAR_ENABLED and ROLLBAR_ACCESS_TOKEN:
     ROLLBAR = {
         "access_token": ROLLBAR_ACCESS_TOKEN,
         "environment": ROLLBAR_ENV,
         "root": str(BASE_DIR),
     }
-    MIDDLEWARE.append("rollbar.contrib.django.middleware.RollbarNotifierMiddleware")
+    MIDDLEWARE.append(
+        "rollbar.contrib.django.middleware.RollbarNotifierMiddleware"
+    )

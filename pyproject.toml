@@ -1,7 +1,11 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "hexlet-code"
 version = "0.1.0"
-description = "Add your description here"
+description = "Task Manager (Hexlet)"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -22,3 +26,32 @@ dev = [
     "pytest-django>=4.11.1",
     "ruff>=0.14.10",
 ]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+    "task_manager*",
+    "core*",
+    "users*",
+    "statuses*",
+    "tasks*",
+    "labels*",
+]
+exclude = [
+    "templates*",
+    "staticfiles*",
+    "media*",
+    "tests*",
+]
+
+[tool.setuptools.package-data]
+# Keep this for future-proofing if templates/static ever move inside packages.
+"task_manager" = ["templates/**/*"]
+"core" = ["templates/**/*"]
+"users" = ["templates/**/*"]
+"statuses" = ["templates/**/*"]
+"tasks" = ["templates/**/*"]
+"labels" = ["templates/**/*"]

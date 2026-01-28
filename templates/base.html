@@ -3,7 +3,7 @@
 <html lang="ru">
 <head>
     <meta charset="utf-8">
-    <title>{% block title %}Task Manager{% endblock %}</title>
+    <title>{% block title %}Менеджер задач{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     {% bootstrap_css %}
@@ -13,7 +13,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <a class="navbar-brand" href="{% url 'home' %}">
-            Task Manager
+            Менеджер задач
         </a>
 
         <button class="navbar-toggler"
@@ -28,12 +28,13 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-lg-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'users:list' %}">
+                        Пользователи
+                    </a>
+                </li>
+
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'users:list' %}">
-                            Пользователи
-                        </a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'statuses:list' %}">
                             Статусы
@@ -49,16 +50,10 @@
                             Метки
                         </a>
                     </li>
-
-                    <li class="nav-item me-2">
-                        <span class="navbar-text">
-                            {{ user.username }}
-                        </span>
-                    </li>
                     <li class="nav-item">
                         <form method="post" action="{% url 'logout' %}" class="d-inline">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-secondary btn-sm">
+                            <button type="submit" class="btn btn-link nav-link p-0">
                                 Выход
                             </button>
                         </form>
@@ -72,11 +67,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'users:create' %}">
                             Регистрация
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'users:list' %}">
-                            Пользователи
                         </a>
                     </li>
                 {% endif %}

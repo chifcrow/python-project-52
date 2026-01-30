@@ -1,22 +1,21 @@
 {% extends "base.html" %}
-{% load i18n %}
 
-{% block title %}{% trans "Delete task" %}{% endblock %}
+{% block title %}Удаление задачи{% endblock %}
 
 {% block content %}
-<h1 class="h3 mb-3">{% trans "Delete task" %}</h1>
+<h1 class="h3 mb-3">Удаление задачи</h1>
 
 <div class="alert alert-danger" role="alert">
-    {% trans "Are you sure you want to delete this task?" %}
+    Вы уверены, что хотите удалить задачу?
 </div>
 
 <form method="post">
     {% csrf_token %}
     <button type="submit" class="btn btn-danger">
-        {% trans "Yes, delete" %}
+        Да, удалить
     </button>
     <a class="btn btn-outline-secondary" href="{% url 'tasks:list' %}">
-        {% trans "Cancel" %}
+        Отмена
     </a>
 </form>
 {% endblock %}

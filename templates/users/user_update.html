@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% load i18n django_bootstrap5 %}
+{% load django_bootstrap5 %}
 
-{% block title %}{% trans "Edit user" %}{% endblock %}
+{% block title %}Изменение пользователя{% endblock %}
 
 {% block content %}
-<h1 class="h3 mb-3">{% trans "Edit user" %}</h1>
+<h1 class="h3 mb-3">Изменение пользователя</h1>
 
 <form method="post" class="w-100" novalidate>
     {% csrf_token %}
@@ -13,7 +13,7 @@
 
     <div class="mt-3">
         <button type="submit" class="btn btn-primary">
-            {% trans "Update" %}
+            Изменить
         </button>
     </div>
 </form>

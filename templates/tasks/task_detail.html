@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load i18n %}
 
 {% block title %}{{ task.name }}{% endblock %}
 
@@ -8,17 +7,17 @@
     <div>
         <h1 class="h3 mb-1">{{ task.name }}</h1>
         <div class="text-muted">
-            {% trans "Created at" %}: {{ task.created_at }}
+            Создано: {{ task.created_at }}
         </div>
     </div>
     <div class="text-end">
         <a class="btn btn-sm btn-outline-secondary"
            href="{% url 'tasks:update' task.pk %}">
-            {% trans "Edit" %}
+            Изменить
         </a>
         <a class="btn btn-sm btn-outline-danger"
            href="{% url 'tasks:delete' task.pk %}">
-            {% trans "Delete" %}
+            Удалить
         </a>
     </div>
 </div>
@@ -26,16 +25,16 @@
 <div class="card">
     <div class="card-body">
         <dl class="row mb-0">
-            <dt class="col-sm-3">{% trans "Status" %}</dt>
+            <dt class="col-sm-3">Статус</dt>
             <dd class="col-sm-9">{{ task.status.name }}</dd>
 
-            <dt class="col-sm-3">{% trans "Executor" %}</dt>
+            <dt class="col-sm-3">Исполнитель</dt>
             <dd class="col-sm-9">{{ task.executor.username|default:"-" }}</dd>
 
-            <dt class="col-sm-3">{% trans "Author" %}</dt>
+            <dt class="col-sm-3">Автор</dt>
             <dd class="col-sm-9">{{ task.author.username }}</dd>
 
-            <dt class="col-sm-3">{% trans "Labels" %}</dt>
+            <dt class="col-sm-3">Метки</dt>
             <dd class="col-sm-9">
                 {% for label in task.labels.all %}
                     <span class="badge bg-secondary me-1">{{ label.name }}</span>
@@ -44,7 +43,7 @@
                 {% endfor %}
             </dd>
 
-            <dt class="col-sm-3">{% trans "Description" %}</dt>
+            <dt class="col-sm-3">Описание</dt>
             <dd class="col-sm-9">
                 {% if task.description %}
                     <pre class="mb-0">{{ task.description }}</pre>

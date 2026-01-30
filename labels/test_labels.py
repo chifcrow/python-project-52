@@ -41,7 +41,9 @@ def test_label_create(client, user):
 
     assert response.status_code == 200
     assert Label.objects.filter(name="bug").exists()
-    assert "Label created successfully." in response.content.decode()
+
+    body = response.content.decode()
+    assert "Метка успешно создана." in body
 
 
 @pytest.mark.django_db
@@ -56,7 +58,9 @@ def test_label_update(client, user):
     assert response.status_code == 200
     label.refresh_from_db()
     assert label.name == "enhancement"
-    assert "Label updated successfully." in response.content.decode()
+
+    body = response.content.decode()
+    assert "Метка успешно изменена." in body
 
 
 @pytest.mark.django_db
@@ -70,7 +74,9 @@ def test_label_delete(client, user):
 
     assert response.status_code == 200
     assert not Label.objects.filter(pk=label.pk).exists()
-    assert "Label deleted successfully." in response.content.decode()
+
+    body = response.content.decode()
+    assert "Метка успешно удалена." in body
 
 
 @pytest.mark.django_db
@@ -94,5 +100,4 @@ def test_label_delete_is_blocked_when_used_by_task(client, user, status):
     assert Label.objects.filter(pk=label.pk).exists()
 
     body = response.content.decode()
-    expected = "Cannot delete label because it is in use."
-    assert expected in body
+    assert "Невозможно удалить метку, потому что она используется." in body

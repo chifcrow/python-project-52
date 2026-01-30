@@ -1,22 +1,21 @@
 {% extends "base.html" %}
-{% load i18n %}
 
-{% block title %}{% trans "Delete status" %}{% endblock %}
+{% block title %}Удаление статуса{% endblock %}
 
 {% block content %}
-<h1 class="h3 mb-3">{% trans "Delete status" %}</h1>
+<h1 class="h3 mb-3">Удаление статуса</h1>
 
 <div class="alert alert-danger" role="alert">
-    {% trans "Are you sure you want to delete this status?" %}
+    Вы уверены, что хотите удалить статус?
 </div>
 
 <form method="post">
     {% csrf_token %}
     <button type="submit" class="btn btn-danger">
-        {% trans "Yes, delete" %}
+        Да, удалить
     </button>
     <a class="btn btn-outline-secondary" href="{% url 'statuses:list' %}">
-        {% trans "Cancel" %}
+        Отмена
     </a>
 </form>
 {% endblock %}

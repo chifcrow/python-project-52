@@ -1,19 +1,17 @@
 {% extends "base.html" %}
-{% load i18n django_bootstrap5 %}
+{% load django_bootstrap5 %}
 
-{% block title %}{% trans "Create status" %}{% endblock %}
+{% block title %}Создание статуса{% endblock %}
 
 {% block content %}
-<h1 class="h3 mb-3">{% trans "Create status" %}</h1>
+<h1 class="h3 mb-3">Создание статуса</h1>
 
 <form method="post" class="w-100" novalidate>
     {% csrf_token %}
-
     {% bootstrap_form form %}
-
     <div class="mt-3">
         <button type="submit" class="btn btn-primary">
-            {% trans "Create" %}
+            Создать
         </button>
     </div>
 </form>

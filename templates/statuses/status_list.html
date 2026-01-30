@@ -1,13 +1,12 @@
 {% extends "base.html" %}
-{% load i18n %}
 
-{% block title %}{% trans "Statuses" %}{% endblock %}
+{% block title %}Статусы{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="h3 mb-0">{% trans "Statuses" %}</h1>
+    <h1 class="h3 mb-0">Статусы</h1>
     <a class="btn btn-primary" href="{% url 'statuses:create' %}">
-        {% trans "Create status" %}
+        Создать статус
     </a>
 </div>
 
@@ -15,8 +14,8 @@
     <table class="table table-striped align-middle">
         <thead>
         <tr>
-            <th scope="col">{% trans "Name" %}</th>
-            <th scope="col" class="text-end">{% trans "Actions" %}</th>
+            <th scope="col">Название</th>
+            <th scope="col" class="text-end">Действия</th>
         </tr>
         </thead>
         <tbody>
@@ -26,19 +25,17 @@
                 <td class="text-end">
                     <a class="btn btn-sm btn-outline-secondary"
                        href="{% url 'statuses:update' status.pk %}">
-                        {% trans "Edit" %}
+                        Изменить
                     </a>
                     <a class="btn btn-sm btn-outline-danger"
                        href="{% url 'statuses:delete' status.pk %}">
-                        {% trans "Delete" %}
+                        Удалить
                     </a>
                 </td>
             </tr>
         {% empty %}
             <tr>
-                <td colspan="2" class="text-muted">
-                    {% trans "No statuses found." %}
-                </td>
+                <td colspan="2" class="text-muted">Статусов нет.</td>
             </tr>
         {% endfor %}
         </tbody>

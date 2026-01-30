@@ -35,7 +35,9 @@ def test_status_create(client, user):
 
     assert response.status_code == 200
     assert Status.objects.filter(name="New").exists()
-    assert "Status created successfully." in response.content.decode()
+
+    body = response.content.decode()
+    assert "Статус успешно создан." in body
 
 
 @pytest.mark.django_db
@@ -50,7 +52,9 @@ def test_status_update(client, user):
     assert response.status_code == 200
     status.refresh_from_db()
     assert status.name == "Done"
-    assert "Status updated successfully." in response.content.decode()
+
+    body = response.content.decode()
+    assert "Статус успешно изменён." in body
 
 
 @pytest.mark.django_db
@@ -64,7 +68,9 @@ def test_status_delete(client, user):
 
     assert response.status_code == 200
     assert not Status.objects.filter(pk=status.pk).exists()
-    assert "Status deleted successfully." in response.content.decode()
+
+    body = response.content.decode()
+    assert "Статус успешно удалён." in body
 
 
 @pytest.mark.django_db
@@ -83,4 +89,6 @@ def test_status_delete_protected_error(client, user, monkeypatch):
 
     assert response.status_code == 200
     assert Status.objects.filter(pk=status.pk).exists()
-    assert "Cannot delete status because it is in use." in response.content.decode()
+
+    body = response.content.decode()
+    assert "Невозможно удалить статус, потому что он используется." in body

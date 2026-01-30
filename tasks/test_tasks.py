@@ -50,6 +50,7 @@ def test_task_create_sets_author(client, user, other_user, status):
         "description": "Some description",
         "status": status.pk,
         "executor": other_user.pk,
+        "labels": [],
     }
     response = client.post(url, data=payload)
 
@@ -95,6 +96,7 @@ def test_task_update(client, user, status):
         "description": "New",
         "status": status.pk,
         "executor": "",
+        "labels": [],
     }
     response = client.post(url, data=payload)
 
@@ -122,14 +124,18 @@ def test_task_delete_only_author_can_delete(client, user, other_user, status):
 
     assert response.status_code == 200
     assert Task.objects.filter(pk=task.pk).exists()
-    assert "Only the author can delete this task." in response.content.decode()
+
+    body = response.content.decode()
+    assert "Задачу может удалить только её автор." in body
 
     client.force_login(user)
     response = client.post(url, follow=True)
 
     assert response.status_code == 200
     assert not Task.objects.filter(pk=task.pk).exists()
-    assert "Task deleted successfully." in response.content.decode()
+
+    body = response.content.decode()
+    assert "Задача успешно удалена." in body
 
 
 @pytest.mark.django_db

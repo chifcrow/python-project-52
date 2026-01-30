@@ -25,7 +25,7 @@ class StatusCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, "Status created successfully.")
+        messages.success(self.request, "Статус успешно создан.")
         return response
 
 
@@ -37,7 +37,7 @@ class StatusUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, "Status updated successfully.")
+        messages.success(self.request, "Статус успешно изменён.")
         return response
 
 
@@ -52,8 +52,9 @@ class StatusDeleteView(LoginRequiredMixin, DeleteView):
         except ProtectedError:
             messages.error(
                 self.request,
-                "Cannot delete status because it is in use.",
+                "Невозможно удалить статус, потому что он используется.",
             )
             return HttpResponseRedirect(reverse("statuses:list"))
-        messages.success(self.request, "Status deleted successfully.")
+
+        messages.success(self.request, "Статус успешно удалён.")
         return response

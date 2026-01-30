@@ -1,13 +1,12 @@
 {% extends "base.html" %}
-{% load i18n %}
 
-{% block title %}{% trans "Users" %}{% endblock %}
+{% block title %}Пользователи{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="h3 mb-0">{% trans "Users" %}</h1>
+    <h1 class="h3 mb-0">Пользователи</h1>
     <a class="btn btn-primary" href="{% url 'users:create' %}">
-        {% trans "Create user" %}
+        Регистрация
     </a>
 </div>
 
@@ -15,9 +14,9 @@
     <table class="table table-striped align-middle">
         <thead>
         <tr>
-            <th scope="col">{% trans "Username" %}</th>
-            <th scope="col">{% trans "Full name" %}</th>
-            <th scope="col" class="text-end">{% trans "Actions" %}</th>
+            <th scope="col">Имя пользователя</th>
+            <th scope="col">Полное имя</th>
+            <th scope="col" class="text-end">Действия</th>
         </tr>
         </thead>
         <tbody>
@@ -28,19 +27,17 @@
                 <td class="text-end">
                     <a class="btn btn-sm btn-outline-secondary"
                        href="{% url 'users:update' user.pk %}">
-                        {% trans "Edit" %}
+                        Изменить
                     </a>
                     <a class="btn btn-sm btn-outline-danger"
                        href="{% url 'users:delete' user.pk %}">
-                        {% trans "Delete" %}
+                        Удалить
                     </a>
                 </td>
             </tr>
         {% empty %}
             <tr>
-                <td colspan="3" class="text-muted">
-                    {% trans "No users found." %}
-                </td>
+                <td colspan="3" class="text-muted">Пользователей нет.</td>
             </tr>
         {% endfor %}
         </tbody>

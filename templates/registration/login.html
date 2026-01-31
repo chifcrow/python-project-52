@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load django_bootstrap5 %}
 
 {% block title %}Вход{% endblock %}
 
@@ -9,7 +8,31 @@
 <form method="post" class="w-100" novalidate>
     {% csrf_token %}
 
-    {% bootstrap_form form %}
+    <div class="mb-3">
+        <label for="id_username" class="form-label">Имя пользователя</label>
+        <input type="text"
+               name="username"
+               id="id_username"
+               class="form-control"
+               placeholder="Имя пользователя"
+               value="{{ form.username.value|default_if_none:'' }}">
+    </div>
+
+    <div class="mb-3">
+        <label for="id_password" class="form-label">Пароль</label>
+        <input type="password"
+               name="password"
+               id="id_password"
+               class="form-control"
+               placeholder="Пароль">
+    </div>
+
+    {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            Пожалуйста, введите правильные имя пользователя и пароль.
+            Оба поля могут быть чувствительны к регистру.
+        </div>
+    {% endif %}
 
     <div class="mt-3">
         <button type="submit" class="btn btn-primary">

@@ -1,5 +1,6 @@
 # users/views.py
 
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
@@ -18,6 +19,11 @@ class UserCreateView(CreateView):
     form_class = CustomUserCreationForm
     template_name = "users/user_form.html"
     success_url = reverse_lazy("login")
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Пользователь успешно зарегистрирован")
+        return response
 
 
 class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):

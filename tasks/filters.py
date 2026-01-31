@@ -1,7 +1,9 @@
 # tasks/filters.py
 
 import django_filters
+from django import forms
 from django.contrib.auth import get_user_model
+
 from labels.models import Label
 from statuses.models import Status
 from tasks.models import Task
@@ -9,16 +11,32 @@ from tasks.models import Task
 
 class TaskFilter(django_filters.FilterSet):
     status = django_filters.ModelChoiceFilter(
+        label="Статус",
         queryset=Status.objects.all().order_by("id"),
+        empty_label="---------",
     )
     executor = django_filters.ModelChoiceFilter(
+        label="Исполнитель",
         queryset=get_user_model().objects.all().order_by("id"),
+        empty_label="---------",
     )
     labels = django_filters.ModelChoiceFilter(
+        label="Метка",
         field_name="labels",
         queryset=Label.objects.all().order_by("id"),
+        empty_label="---------",
     )
-    self_tasks = django_filters.BooleanFilter(method="filter_self_tasks")
+    self_tasks = django_filters.BooleanFilter(
+        label="Только свои задачи",
+        method="filter_self_tasks",
+        widget=forms.Select(
+            choices=(
+                ("", "---------"),
+                ("true", "Да"),
+                ("false", "Нет"),
+            )
+        ),
+    )
 
     class Meta:
         model = Task

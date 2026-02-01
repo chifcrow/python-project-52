@@ -3,7 +3,8 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
+from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from users.forms import CustomUserCreationForm, UserUpdateForm
@@ -35,6 +36,13 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self) -> bool:
         return self.request.user.pk == self.get_object().pk
 
+    def handle_no_permission(self):
+        messages.error(
+            self.request,
+            "У вас нет прав для изменения другого пользователя.",
+        )
+        return HttpResponseRedirect(reverse("users:list"))
+
 
 class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = get_user_model()
@@ -43,3 +51,10 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self) -> bool:
         return self.request.user.pk == self.get_object().pk
+
+    def handle_no_permission(self):
+        messages.error(
+            self.request,
+            "У вас нет прав для изменения другого пользователя.",
+        )
+        return HttpResponseRedirect(reverse("users:list"))

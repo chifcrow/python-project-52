@@ -13,7 +13,6 @@ from users.forms import CustomUserCreationForm, UserUpdateForm
 
 
 def ensure_user_names(user) -> None:
-    # Ensure first_name/last_name are set for users created from fixtures.
     first = (user.first_name or "").strip()
     last = (user.last_name or "").strip()
     if first or last:
@@ -23,15 +22,12 @@ def ensure_user_names(user) -> None:
     if not username:
         return
 
-    parts = (
-        username.replace("-", " ").replace("_", " ").strip().split()
-    )
+    parts = username.replace("-", " ").replace("_", " ").strip().split()
     if not parts:
         return
 
     user.first_name = parts[0].title()
     user.last_name = " ".join(parts[1:]).title()
-
     user.save(update_fields=["first_name", "last_name"])
 
 
@@ -62,6 +58,11 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         user = super().get_object(queryset=queryset)
         ensure_user_names(user)
         return user
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Пользователь успешно изменен")
+        return response
 
     def test_func(self) -> bool:
         return self.request.user.pk == self.get_object().pk

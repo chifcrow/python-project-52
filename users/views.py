@@ -1,5 +1,7 @@
 # users/views.py
 
+from __future__ import annotations
+
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -8,6 +10,29 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from users.forms import CustomUserCreationForm, UserUpdateForm
+
+
+def ensure_user_names(user) -> None:
+    # Ensure first_name/last_name are set for users created from fixtures.
+    first = (user.first_name or "").strip()
+    last = (user.last_name or "").strip()
+    if first or last:
+        return
+
+    username = (user.username or "").strip()
+    if not username:
+        return
+
+    parts = (
+        username.replace("-", " ").replace("_", " ").strip().split()
+    )
+    if not parts:
+        return
+
+    user.first_name = parts[0].title()
+    user.last_name = " ".join(parts[1:]).title()
+
+    user.save(update_fields=["first_name", "last_name"])
 
 
 class UserListView(ListView):
@@ -32,6 +57,11 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     form_class = UserUpdateForm
     template_name = "users/user_update.html"
     success_url = reverse_lazy("users:list")
+
+    def get_object(self, queryset=None):
+        user = super().get_object(queryset=queryset)
+        ensure_user_names(user)
+        return user
 
     def test_func(self) -> bool:
         return self.request.user.pk == self.get_object().pk

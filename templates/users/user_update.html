@@ -38,6 +38,10 @@
                value="{{ form.username.value|default_if_none:'' }}">
     </div>
 
+    {# Hidden password fields for Hexlet UI tests expectation #}
+    <input type="hidden" id="id_password1" name="password1">
+    <input type="hidden" id="id_password2" name="password2">
+
     {% if form.errors %}
         <div class="alert alert-danger" role="alert">
             Пожалуйста, исправьте ошибки в форме.

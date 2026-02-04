@@ -5,7 +5,7 @@ from __future__ import annotations
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
@@ -80,10 +80,10 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     template_name = "users/user_confirm_delete.html"
     success_url = reverse_lazy("users:list")
 
-    def delete(self, request, *args, **kwargs):
-        response = super().delete(request, *args, **kwargs)
+    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        # Add message before delete to survive logout/session changes.
         messages.success(request, "Пользователь успешно удален")
-        return response
+        return super().post(request, *args, **kwargs)
 
     def test_func(self) -> bool:
         return self.request.user.pk == self.get_object().pk

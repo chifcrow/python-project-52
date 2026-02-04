@@ -30,9 +30,7 @@ ALLOWED_HOSTS = [
 ]
 extra_hosts = os.getenv("ALLOWED_HOSTS", "")
 if extra_hosts:
-    ALLOWED_HOSTS.extend(
-        [h.strip() for h in extra_hosts.split(",") if h.strip()]
-    )
+    ALLOWED_HOSTS.extend([h.strip() for h in extra_hosts.split(",") if h.strip()])
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -116,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = os.getenv("LANGUAGE_CODE", "en-us")
+LANGUAGE_CODE = os.getenv("LANGUAGE_CODE", "ru")
 TIME_ZONE = os.getenv("TIME_ZONE", "UTC")
 USE_I18N = True
 USE_TZ = True
@@ -136,22 +134,5 @@ LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
-# Rollbar (Django middleware integration)
-ROLLBAR_ACCESS_TOKEN = os.getenv("ROLLBAR_ACCESS_TOKEN", "").strip()
-ROLLBAR_ENV = os.getenv("ROLLBAR_ENV", "development").strip()
-ROLLBAR_ENABLED = os.getenv("ROLLBAR_ENABLED", "true").lower() in {
-    "1",
-    "true",
-    "yes",
-    "on",
-}
-
-if not DEBUG and ROLLBAR_ENABLED and ROLLBAR_ACCESS_TOKEN:
-    ROLLBAR = {
-        "access_token": ROLLBAR_ACCESS_TOKEN,
-        "environment": ROLLBAR_ENV,
-        "root": str(BASE_DIR),
-    }
-    MIDDLEWARE.append(
-        "rollbar.contrib.django.middleware.RollbarNotifierMiddleware"
-    )
+# Messages must survive even when the user record is deleted.
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"

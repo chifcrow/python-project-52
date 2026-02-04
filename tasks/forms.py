@@ -10,11 +10,14 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = ("name", "description", "status", "executor", "labels")
         labels = {
-            "name": "Название",
+            "name": "Имя",
             "description": "Описание",
             "status": "Статус",
             "executor": "Исполнитель",
             "labels": "Метки",
+        }
+        widgets = {
+            "name": forms.TextInput(attrs={"placeholder": "Имя"}),
         }
 
     def __init__(self, *args, **kwargs):

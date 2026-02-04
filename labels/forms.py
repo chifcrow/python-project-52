@@ -9,6 +9,7 @@ class LabelForm(forms.ModelForm):
     class Meta:
         model = Label
         fields = ("name",)
-        labels = {
-            "name": "Название",
+        labels = {"name": "Имя"}
+        widgets = {
+            "name": forms.TextInput(attrs={"placeholder": "Имя"}),
         }

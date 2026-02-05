@@ -25,7 +25,7 @@ class StatusCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, "Статус успешно создан.")
+        messages.success(self.request, "Статус успешно создан")
         return response
 
 
@@ -37,7 +37,7 @@ class StatusUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        messages.success(self.request, "Статус успешно изменён.")
+        messages.success(self.request, "Статус успешно изменен")
         return response
 
 
@@ -56,5 +56,5 @@ class StatusDeleteView(LoginRequiredMixin, DeleteView):
             )
             return HttpResponseRedirect(reverse("statuses:list"))
 
-        messages.success(self.request, "Статус успешно удалён.")
+        messages.success(self.request, "Статус успешно удален")
         return response

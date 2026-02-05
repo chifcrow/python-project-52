@@ -9,7 +9,6 @@ register = template.Library()
 def display_full_name(user) -> str:
     first = (getattr(user, "first_name", "") or "").strip()
     last = (getattr(user, "last_name", "") or "").strip()
-
     if first or last:
         return f"{first} {last}".strip()
 

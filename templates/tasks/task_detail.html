@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load user_extras %}
 
 {% block title %}{{ task.name }}{% endblock %}
 
@@ -7,7 +8,7 @@
     <div>
         <h1 class="h3 mb-1">{{ task.name }}</h1>
         <div class="text-muted">
-            Создано: {{ task.created_at }}
+            Создано: {{ task.created_at|date:"d.m.Y H:i" }}
         </div>
     </div>
     <div class="text-end">
@@ -29,10 +30,10 @@
             <dd class="col-sm-9">{{ task.status.name }}</dd>
 
             <dt class="col-sm-3">Исполнитель</dt>
-            <dd class="col-sm-9">{{ task.executor.username|default:"-" }}</dd>
+            <dd class="col-sm-9">{{ task.executor|display_full_name }}</dd>
 
             <dt class="col-sm-3">Автор</dt>
-            <dd class="col-sm-9">{{ task.author.username }}</dd>
+            <dd class="col-sm-9">{{ task.author|display_full_name }}</dd>
 
             <dt class="col-sm-3">Метки</dt>
             <dd class="col-sm-9">

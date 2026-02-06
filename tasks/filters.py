@@ -43,13 +43,7 @@ class TaskFilter(django_filters.FilterSet):
     self_tasks = django_filters.BooleanFilter(
         label="Только свои задачи",
         method="filter_self_tasks",
-        widget=forms.Select(
-            choices=(
-                ("", "---------"),
-                ("true", "Да"),
-                ("false", "Нет"),
-            )
-        ),
+        widget=forms.CheckboxInput(),
     )
 
     class Meta:
@@ -58,7 +52,6 @@ class TaskFilter(django_filters.FilterSet):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Ensure executor options use full names.
         self.filters["executor"].field.label_from_instance = display_user_name
 
     def filter_self_tasks(self, queryset, name, value):

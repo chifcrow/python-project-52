@@ -1,10 +1,9 @@
 from django.http import HttpRequest, HttpResponse
-from django.views import View
+from django.views.generic import TemplateView
 
 
-class HomeView(View):
-    def get(self, request: HttpRequest) -> HttpResponse:
-        return HttpResponse("Hello from Task Manager!")
+class HomeView(TemplateView):
+    template_name = "index.html"
 
 
 def healthz(request: HttpRequest) -> HttpResponse:

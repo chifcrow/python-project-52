@@ -1,0 +1,44 @@
+name: sonarcloud
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  sonarcloud:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          source $HOME/.local/bin/env
+          uv --version
+
+      - name: Set up Python (uv)
+        run: |
+          source $HOME/.local/bin/env
+          uv python install 3.10
+          uv python pin 3.10
+
+      - name: Install dependencies
+        run: |
+          source $HOME/.local/bin/env
+          uv sync
+
+      - name: Run tests with coverage
+        run: |
+          source $HOME/.local/bin/env
+          uv run pytest --cov=. --cov-report=xml:coverage.xml -q
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

@@ -113,6 +113,4 @@ ok
 
 ## License
 
-MIT License
-
----
+MIT Licen

@@ -30,7 +30,8 @@ ALLOWED_HOSTS = [
 ]
 extra_hosts = os.getenv("ALLOWED_HOSTS", "")
 if extra_hosts:
-    ALLOWED_HOSTS.extend([h.strip() for h in extra_hosts.split(",") if h.strip()])
+    extra_list = [h.strip() for h in extra_hosts.split(",") if h.strip()]
+    ALLOWED_HOSTS.extend(extra_list)
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -134,5 +135,4 @@ LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
-# Messages must survive even when the user record is deleted.
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"

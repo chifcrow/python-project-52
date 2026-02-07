@@ -3,8 +3,8 @@
 from django.contrib import admin
 from django.urls import include, path
 
-from core.views import HomeView, healthz
 from task_manager.auth_views import CustomLoginView, CustomLogoutView
+from task_manager.common.views import HomeView, healthz
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),

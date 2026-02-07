@@ -1,6 +1,7 @@
 # labels/urls.py
 
 from django.urls import path
+
 from labels.views import (
     LabelCreateView,
     LabelDeleteView,

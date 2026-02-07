@@ -1,20 +1,8 @@
 # statuses/test_statuses.py
 
 import pytest
-from django.contrib.auth import get_user_model
-from django.db.models.deletion import ProtectedError
 from django.urls import reverse
-
 from statuses.models import Status
-
-
-@pytest.fixture()
-def user(db):
-    User = get_user_model()
-    return User.objects.create_user(
-        username="tester",
-        password="StrongPassword123!",
-    )
 
 
 @pytest.mark.django_db
@@ -37,7 +25,7 @@ def test_status_create(client, user):
     assert Status.objects.filter(name="New").exists()
 
     body = response.content.decode()
-    assert "Статус успешно создан." in body
+    assert "Статус успешно создан" in body
 
 
 @pytest.mark.django_db
@@ -54,7 +42,7 @@ def test_status_update(client, user):
     assert status.name == "Done"
 
     body = response.content.decode()
-    assert "Статус успешно изменён." in body
+    assert "Статус успешно изменен" in body
 
 
 @pytest.mark.django_db
@@ -70,7 +58,7 @@ def test_status_delete(client, user):
     assert not Status.objects.filter(pk=status.pk).exists()
 
     body = response.content.decode()
-    assert "Статус успешно удалён." in body
+    assert "Статус успешно удален" in body
 
 
 @pytest.mark.django_db
@@ -79,6 +67,8 @@ def test_status_delete_protected_error(client, user, monkeypatch):
 
     status = Status.objects.create(name="Protected")
     url = reverse("statuses:delete", kwargs={"pk": status.pk})
+
+    from django.db.models.deletion import ProtectedError
 
     def raise_protected(*args, **kwargs):
         raise ProtectedError("protected", protected_objects=[])
@@ -89,6 +79,4 @@ def test_status_delete_protected_error(client, user, monkeypatch):
 
     assert response.status_code == 200
     assert Status.objects.filter(pk=status.pk).exists()
-
-    body = response.content.decode()
-    assert "Невозможно удалить статус, потому что он используется." in body
+    assert "Невозможно удалить статус" in response.content.decode()

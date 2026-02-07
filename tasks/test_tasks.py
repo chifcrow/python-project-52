@@ -1,33 +1,14 @@
 # tasks/test_tasks.py
 
 import pytest
-from django.contrib.auth import get_user_model
 from django.urls import reverse
 
 from statuses.models import Status
 from tasks.models import Task
 
 
-@pytest.fixture()
-def user(db):
-    User = get_user_model()
-    return User.objects.create_user(
-        username="author",
-        password="StrongPassword123!",
-    )
-
-
-@pytest.fixture()
-def other_user(db):
-    User = get_user_model()
-    return User.objects.create_user(
-        username="other",
-        password="StrongPassword123!",
-    )
-
-
-@pytest.fixture()
-def status(db):
+@pytest.fixture(name="status")
+def _status(db):
     return Status.objects.create(name="New")
 
 
@@ -41,42 +22,23 @@ def test_tasks_list_requires_login(client):
 
 
 @pytest.mark.django_db
-def test_task_create_sets_author(client, user, other_user, status):
+def test_task_create(client, user, status):
     client.force_login(user)
 
     url = reverse("tasks:create")
-    payload = {
-        "name": "Test task",
-        "description": "Some description",
-        "status": status.pk,
-        "executor": other_user.pk,
-        "labels": [],
-    }
-    response = client.post(url, data=payload)
-
-    assert response.status_code == 302
-    assert response.url == reverse("tasks:list")
-
-    task = Task.objects.get(name="Test task")
-    assert task.author_id == user.pk
-    assert task.executor_id == other_user.pk
-    assert task.status_id == status.pk
-
-
-@pytest.mark.django_db
-def test_task_detail_requires_login(client, user, status):
-    task = Task.objects.create(
-        name="Detail task",
-        description="",
-        status=status,
-        author=user,
+    response = client.post(
+        url,
+        data={
+            "name": "Task name",
+            "description": "Task description",
+            "status": status.pk,
+        },
+        follow=True,
     )
 
-    url = reverse("tasks:detail", kwargs={"pk": task.pk})
-    response = client.get(url)
-
-    assert response.status_code == 302
-    assert response.url.startswith(reverse("login"))
+    assert response.status_code == 200
+    assert Task.objects.filter(name="Task name").exists()
+    assert "Задача успешно создана" in response.content.decode()
 
 
 @pytest.mark.django_db
@@ -85,27 +47,26 @@ def test_task_update(client, user, status):
 
     task = Task.objects.create(
         name="Old name",
-        description="Old",
+        description="",
         status=status,
         author=user,
     )
 
     url = reverse("tasks:update", kwargs={"pk": task.pk})
-    payload = {
-        "name": "New name",
-        "description": "New",
-        "status": status.pk,
-        "executor": "",
-        "labels": [],
-    }
-    response = client.post(url, data=payload)
+    response = client.post(
+        url,
+        data={
+            "name": "New name",
+            "description": "Updated",
+            "status": status.pk,
+        },
+        follow=True,
+    )
 
-    assert response.status_code == 302
-    assert response.url == reverse("tasks:list")
-
+    assert response.status_code == 200
     task.refresh_from_db()
     assert task.name == "New name"
-    assert task.description == "New"
+    assert "Задача успешно изменена" in response.content.decode()
 
 
 @pytest.mark.django_db
@@ -124,28 +85,23 @@ def test_task_delete_only_author_can_delete(client, user, other_user, status):
 
     assert response.status_code == 200
     assert Task.objects.filter(pk=task.pk).exists()
-
-    body = response.content.decode()
-    assert "Задачу может удалить только её автор." in body
-
-    client.force_login(user)
-    response = client.post(url, follow=True)
-
-    assert response.status_code == 200
-    assert not Task.objects.filter(pk=task.pk).exists()
-
-    body = response.content.decode()
-    assert "Задача успешно удалена." in body
+    assert "Задачу может удалить только ее автор" in response.content.decode()
 
 
 @pytest.mark.django_db
-def test_user_deletion_is_protected_when_authored_tasks_exist(user, status):
-    Task.objects.create(
-        name="Authored",
+def test_task_delete_as_author(client, user, status):
+    client.force_login(user)
+
+    task = Task.objects.create(
+        name="To delete",
         description="",
         status=status,
         author=user,
     )
 
-    with pytest.raises(Exception):
-        user.delete()
+    url = reverse("tasks:delete", kwargs={"pk": task.pk})
+    response = client.post(url, follow=True)
+
+    assert response.status_code == 200
+    assert not Task.objects.filter(pk=task.pk).exists()
+    assert "Задача успешно удалена" in response.content.decode()

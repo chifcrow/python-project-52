@@ -36,6 +36,6 @@ jobs:
           uv run pytest --cov=. --cov-report=xml:coverage.xml -q
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v6
+        uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

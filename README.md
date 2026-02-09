@@ -2,6 +2,10 @@
 
 [![Actions Status](https://github.com/chifcrow/python-project-52/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/chifcrow/python-project-52/actions)
 
+### Code coverage
+
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=chifcrow_python-project-52&metric=coverage)](https://sonarcloud.io/summary/new_code?id=chifcrow_python-project-52)
+
 # Task Manager
 
 Django-based web application deployed on Render (PaaS).
